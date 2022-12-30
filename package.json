@@ -1,0 +1,36 @@
+{
+  "name": "team-n5de-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.28.0",
+    "socket.io": "^4.5.4"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "nodemon": "^2.0.20",
+    "sequelize-cli": "^6.5.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rookas33/N5DE_TEAM_Project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rookas33/N5DE_TEAM_Project/issues"
+  },
+  "homepage": "https://github.com/rookas33/N5DE_TEAM_Project#readme",
+  "description": ""
+}

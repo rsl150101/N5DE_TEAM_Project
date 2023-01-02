@@ -9,18 +9,24 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            //
+            // foreignKey 설정
+            models.User.hasOne(models.Order, { foreignKey: 'user_id', sourceKey: 'id' });
         }
     }
     User.init(
         {
             user_id: {
+                allowNull: false,
+                unique: true,
                 type: DataTypes.STRING,
             },
             password: {
+                allowNull: false,
                 type: DataTypes.STRING,
             },
             nickname: {
+                allowNull: false,
+                unique: true,
                 type: DataTypes.STRING,
             },
             point: {
@@ -36,4 +42,5 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
     return User;
+    timestamps: true;
 };

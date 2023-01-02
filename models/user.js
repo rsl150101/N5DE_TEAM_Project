@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            // foreignKey 설정
-            models.User.hasOne(models.Order, { foreignKey: 'user_id', sourceKey: 'id' });
+            models.User.hasOne(models.Order, { foreignKey: 'costomer_id', sourceKey: 'id' });
+            models.User.hasOne(models.Order, { foreignKey: 'driver_id', sourceKey: 'id' });
         }
     }
     User.init(
@@ -30,17 +30,19 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
             },
             point: {
+                allowNull: false,
                 type: DataTypes.BIGINT,
             },
             user_type: {
+                allowNull: false,
                 type: DataTypes.BIGINT,
             },
         },
         {
             sequelize,
             modelName: 'User',
+            timestamps: true,
         }
     );
     return User;
-    timestamps: true;
 };

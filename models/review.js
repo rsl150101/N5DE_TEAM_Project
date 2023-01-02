@@ -9,18 +9,38 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            // 고객 id를 reviewer, 드라이버를 reviewee로 나눔
+            models.review.belongsTo(models.Order, { foreignKey: 'reviewer_id', targetKey: 'costomer_id' });
+            models.review.belongsTo(models.Order, { foreignKey: 'reviewee_id', targetKey: 'driver_id' });
         }
     }
     Review.init(
         {
-            user_id: DataTypes.STRING,
-            content: DataTypes.STRING,
-            nickname: DataTypes.STRING,
-            star: DataTypes.BIGINT,
+            content: {
+                allowNull: false,
+                type: DataTypes.STRING,
+            },
+            nickname: {
+                allowNull: false,
+                type: DataTypes.STRING,
+            },
+            star: {
+                allowNull: false,
+                type: DataTypes.BIGINT,
+            },
+            reviewer_id: {
+                allowNull: false,
+                type: DataTypes.BIGINT,
+            },
+            reviewee_id: {
+                allowNull: false,
+                type: DataTypes.BIGINT,
+            },
         },
         {
             sequelize,
             modelName: 'Review',
+            timestamps: true,
         }
     );
     return Review;

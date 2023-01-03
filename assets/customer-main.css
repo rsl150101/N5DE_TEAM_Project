@@ -1,0 +1,26 @@
+header {
+  display: flex;
+  
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border-bottom: 2px solid #ffc107;
+}
+
+.header__column {
+  display: flex;
+  align-items: center;
+  
+}
+
+.header__column > h1 {
+  font-size: 30px;
+}
+
+#mainSection {
+  border: black 1px solid;
+  padding: 130px 10px 10px 10px;
+}

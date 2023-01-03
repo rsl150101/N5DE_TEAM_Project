@@ -39,10 +39,19 @@ class ApisService {
       asign_table: newOrderData.asign_table,
     };
   };
-  reviewOrder = async (user_id, review_id, content, star) => {
+  reviewOrder = async (user_id, nickname, content, star) => {
     const newReviewData = await this.ApisRepository.reviewOrder(
-      
-    )
+      nickname,
+      user_id,
+      content,
+      star
+    );
+    return {
+      nickname: newReviewData.nickname,
+      user_id: newReviewData.user_id,
+      content: newReviewData.content,
+      star: newReviewData.star,
+    };
   };
 }
 

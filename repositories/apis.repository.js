@@ -1,13 +1,6 @@
-const { Order } = require("../models");
+const { Order, Review } = require("../models");
 
 class ApisRepository {
-  ordersResponse = async () => {
-    // ORM인 Sequelize에서 Posts 모델의 findAll 메소드를 사용해 데이터를 요청합니다.
-    const ordersResponse = await Order.findAll();
-
-    return ordersResponse;
-  };
-
   requestOrder = async (
     user_id,
     status,
@@ -33,6 +26,16 @@ class ApisRepository {
     });
 
     return requestOrder;
+  };
+
+  reviewOrder = async (nickname, user_id, content, star) => {
+    const reviewOrder = await Review.create({
+      nickname,
+      user_id,
+      content,
+      star,
+    });
+    return reviewOrder;
   };
 }
 

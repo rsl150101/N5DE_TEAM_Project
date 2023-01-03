@@ -7,7 +7,6 @@ class UsersService {
     // 저장소(Repository)에게 데이터를 요청합니다.
     const Order = await this.usersRepository.orderResponse();
 
-    // 비즈니스 로직을 수행한 후 사용자에게 보여줄 데이터를 가공합니다.
     return Order.map((Order) => {
       return {
         userId: Order.user_id,
@@ -20,6 +19,29 @@ class UsersService {
         updatedAt: Order.updatedAt,
       };
     });
+  };
+
+  userSignUp = async () => {
+    // 저장소(Repository)에게 데이터를 요청합니다.
+    const SignUpData = await this.usersRepository.Signup(
+      user_id,
+      password,
+      star,
+      point,
+      user_type
+    );
+    return {
+      user_id: SignUpData.user_id,
+      password: SignUpData.password,
+      star: SignUpData.star,
+      point: SignUpData.point,
+      user_type: SignUpData.user_type,
+    };
+  };
+  verifyUser = (user) => {
+    if (!user) {
+      return { statusCode: 400, msg: "이메일 또는 패스워드가 잘못됐습니다." };
+    }
   };
 }
 

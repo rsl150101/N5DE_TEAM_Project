@@ -16,6 +16,7 @@ app.set("view engine", "html");
 
 app.use(express.static("assets"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
@@ -25,6 +26,10 @@ app.use("/api", apiRouter);
 
 app.get("/", (req, res) => {
   return res.render("index");
+});
+
+app.get("/join_page", (req, res) => {
+  return res.render("join_page");
 });
 
 http.listen(8000, () => {

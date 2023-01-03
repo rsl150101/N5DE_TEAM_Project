@@ -1,4 +1,4 @@
-const { Order } = require("../models");
+const { Order, User } = require("../models");
 
 class UsersRepository {
   ordersResponse = async () => {
@@ -31,8 +31,28 @@ class UsersRepository {
       request,
       asign_table,
     });
-
     return neworder;
+  };
+
+  userSignUp = async (user_id, password, user_type) => {
+    if (user_type === 0) {
+      const newuser = await User.create({
+        user_id,
+        password,
+        user_type,
+        point: 1000000,
+      });
+      return newuser;
+    }
+    if (user_type === 1) {
+      const newuser = await User.create({
+        user_id,
+        password,
+        user_type,
+        point: 0,
+      });
+      return newuser;
+    }
   };
 }
 

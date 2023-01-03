@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     /**
@@ -11,19 +9,60 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // 오더 포린키
+      models.Order.belongsTo(models.User, {
+        foreignKey: "customer_id",
+        targetKey: "id",
+      });
+      models.Order.belongsTo(models.User, {
+        foreignKey: "driver_id",
+        targetKey: "id",
+      });
+      models.Order.hasOne(models.Review, {
+        foreignKey: "reviewer_id",
+        sourceKey: "customer_id",
+      });
+      models.Order.hasOne(models.Review, {
+        forignKey: "reviewee_id",
+        sourceKey: "driver_id",
+      });
     }
   }
-  Order.init({
-    user_id: DataTypes.STRING,
-    nickname: DataTypes.STRING,
-    address: DataTypes.STRING,
-    status: DataTypes.BIGINT,
-    request: DataTypes.STRING,
-    photo: DataTypes.STRING,
-    asign_table: DataTypes.BIGINT
-  }, {
-    sequelize,
-    modelName: 'Order',
-  });
+  Order.init(
+    {
+      customer_id: {
+        allowNull: false,
+        type: DataTypes.BIGINT,
+      },
+      driver_id: {
+        allowNull: false,
+        type: DataTypes.BIGINT,
+      },
+      nickname: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      address: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      status: {
+        allowNull: false,
+        type: DataTypes.BIGINT,
+      },
+      request: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      photo: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Order",
+    }
+  );
   return Order;
 };

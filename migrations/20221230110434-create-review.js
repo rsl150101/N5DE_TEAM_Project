@@ -9,16 +9,16 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
+            user_id: {
+                type: Sequelize.STRING,
+            },
             content: {
-                allowNull: false,
                 type: Sequelize.STRING,
             },
             nickname: {
-                allowNull: false,
                 type: Sequelize.STRING,
             },
             star: {
-                allowNull: false,
                 type: Sequelize.BIGINT,
             },
             createdAt: {

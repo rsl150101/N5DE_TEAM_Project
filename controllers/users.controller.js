@@ -7,6 +7,10 @@ const jwt = require("jsonwebtoken");
 class UsersController {
   usersService = new UsersService();
 
+  reqOrderStatus = async (req, res, next) => {
+    const user = req.params.user_id;
+  };
+
   orderResponse = async (req, res, next) => {
     // 서비스 계층에 구현된 로직을 실행합니다.
     const order = await this.usersService.findMyOrder();
@@ -38,6 +42,12 @@ class UsersController {
     }
   };
 
+  // 가입 get
+  getJoin = (req, res) => {
+    return res.render("join_page");
+  };
+
+  // 가입 post
   userSignup = async (req, res) => {
     const { user_type, user_id, password, confirmPassword } = req.body;
     try {

@@ -28,10 +28,6 @@ app.get("/", (req, res) => {
   return res.render("index");
 });
 
-app.get("/join_page", (req, res) => {
-  return res.render("join_page");
-});
-
 http.listen(8000, () => {
   console.log(8000, "서버가 열렸습니다.");
 });

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // 유저 포린키
       models.User.hasOne(models.Order, {
-        foreignKey: "costomer_id",
+        foreignKey: "customer_id",
         sourceKey: "id",
       });
       models.User.hasOne(models.Order, {

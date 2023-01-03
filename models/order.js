@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // 오더 포린키
       models.Order.belongsTo(models.User, {
-        foreignKey: "costomer_id",
+        foreignKey: "customer_id",
         targetKey: "id",
       });
       models.Order.belongsTo(models.User, {
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       models.Order.hasOne(models.Review, {
         foreignKey: "reviewer_id",
-        sourceKey: "costomer_id",
+        sourceKey: "customer_id",
       });
       models.Order.hasOne(models.Review, {
         forignKey: "reviewee_id",
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Order.init(
     {
-      costomer_id: {
+      customer_id: {
         allowNull: false,
         type: DataTypes.BIGINT,
       },

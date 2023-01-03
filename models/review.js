@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // 리뷰 포린키
       models.Review.belongsTo(models.Order, {
         forignKey: "reviewer_id",
-        targetKey: "costomer_id",
+        targetKey: "customer_id",
       });
       models.Review.belongsTo(models.Order, {
         forignKey: "reviewee_id",

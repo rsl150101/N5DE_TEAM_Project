@@ -9,14 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      costomer_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      driver_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
       nickname: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -35,10 +27,6 @@ module.exports = {
       photo: {
         allowNull: false,
         type: Sequelize.STRING,
-      },
-      asign_table: {
-        allowNull: false,
-        type: Sequelize.BIGINT,
       },
       createdAt: {
         allowNull: false,

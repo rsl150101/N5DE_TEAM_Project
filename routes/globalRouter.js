@@ -7,7 +7,10 @@ const router = express.Router();
 
 const userController = new UsersController();
 
-router.post("/join", userController.userSignup);
+router
+  .route("/join")
+  .get(userController.getJoin)
+  .post(userController.userSignup);
 
 router.post("/login", userController.userLogin);
 

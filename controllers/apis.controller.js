@@ -7,7 +7,7 @@ class ApisController {
   requestOrder = async (req, res, next) => {
     try {
       const { nickname, phone, address, photo, request } = req.body;
-      const user_id = "milb4";
+      const user_id = "Milb4";
       const status = 0;
       const driver_id = null;
       const asign_table = 0;
@@ -22,7 +22,7 @@ class ApisController {
         request,
         asign_table
       );
-      res.render(photo);
+      // res.render(photo);
       res.status(201).json({ data: reqOrderData });
     } catch (err) {
       console.log(err);
@@ -34,7 +34,7 @@ class ApisController {
     try {
       const { content, star } = req.body;
       const review_id = req.params;
-      const user_id = "milb4";
+      const user_id = "Milb4";
       const reqReviewData = await this.apisService.reviewOrder(
         user_id,
         review_id,

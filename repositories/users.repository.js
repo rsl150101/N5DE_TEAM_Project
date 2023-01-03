@@ -34,8 +34,8 @@ class UsersRepository {
     return neworder;
   };
 
-  userSignUp = async (user_id, password, user_type) => {
-    if (user_type === 0) {
+  userSignUp = async (user_type, user_id, password) => {
+    if (user_type === 0 ){
       const newuser = await User.create({
         user_id,
         password,

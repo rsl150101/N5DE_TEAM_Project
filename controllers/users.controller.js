@@ -50,13 +50,9 @@ class UsersController {
   // 가입 post
   userSignup = async (req, res) => {
     const { user_type, user_id, password, confirmPassword } = req.body;
+    console.log(user_type, user_id, password, confirmPassword)
     try {
-      const reqSignUpData = await this.usersService.signUp(
-        user_id,
-        password,
-        confirmPassword,
-        user_type
-      );
+
       if (password !== confirmPassword) {
         res.status(412).send({
           errorMessage: "패스워드가 패스워드 확인란과 동일하지 않습니다.",
@@ -80,6 +76,16 @@ class UsersController {
         });
         return;
       }
+      const reqSignUpData = await this.usersService.userSignUp(
+        parseInt(user_type),
+        user_id,
+        password,
+        confirmPassword,
+        res.status(201).send({
+          message:"회원가입을 축하합니다."
+        })
+      );
+
     } catch (error) {
       console.log(error.message);
       res.status(400).send({ errorMessage: "회원가입에 실패하였습니다." });

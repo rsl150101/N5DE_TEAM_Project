@@ -1,175 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-      rel="stylesheet"
-      id="bootstrap-css"
-    />
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+			rel="stylesheet"
+			id="bootstrap-css"
+		/>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <!------ Include the above in your HEAD tag ---------->
-    <title>Document</title>
+		<!------ Include the above in your HEAD tag ---------->
+		<title>Document</title>
 
-    <style>
-      .container {
-        position: absolute;
-        margin: auto;
-      }
+		<style>
+			.container {
+				position: absolute;
+				margin: auto;
+			}
 
-      .card {
-        text-align: center;
+			.card {
+				text-align: center;
 
-        margin-top: 100px;
-        margin-left: 160px;
-        max-width: 450px;
-        height: 90%;
-        border-radius: 30px;
-      }
-    </style>
+				margin-top: 100px;
+				margin-left: 160px;
+				max-width: 450px;
+				height: 90%;
+				border-radius: 30px;
+			}
+		</style>
 
-    <script>
-      function join() {
-        const user_type = $("#user_type").val();
-        const nickname = $("#nickname").val();
-        const user_id = $("#user_id").val();
-        const password = $("#password").val();
-        const confirmPassword = $("#confirmPassword").val();
+		<script>
+			function join() {
+				const user_type = $('#user_type').val();
+				const user_id = $('#user_id').val();
+				const password = $('#password').val();
+				const confirmPassword = $('#confirmPassword').val();
 
-        $.ajax({
-          type: "POST",
-          url: "/join",
-          data: {
-            user_type: user_type,
-            nickname: nickname,
-            user_id: user_id,
-            password: password,
-            confirmPassword: confirmPassword,
-          },
-          success: function (response) {
-            customAlert("회원가입을 축하드립니다!", function () {
-              window.location.replace("/");
-            });
-          },
-          error: function (error) {
-            customAlert(error.responseJSON.errorMessage);
-          },
-        });
-      }
-      function customAlert(text, confirmCallback) {
-        $("#alertText").text(text);
-        $("#alertModal").modal("show");
-        if (confirmCallback) {
-          $("#alertModal .btn-confirm").click(confirmCallback);
-        }
-      }
-    </script>
-  </head>
+				$.ajax({
+					type: 'POST',
+					url: '/join',
+					data: {
+						user_type: user_type,
+						user_id: user_id,
+						password: password,
+						confirmPassword: confirmPassword,
+					},
+					success: function (response) {
+						customAlert('회원가입을 축하드립니다!', function () {
+							window.location.replace('/');
+						});
+					},
+					error: function (error) {
+						customAlert(error.responseJSON.errorMessage);
+					},
+				});
+			}
+			function customAlert(text, confirmCallback) {
+				$('#alertText').text(text);
+				$('#alertModal').modal('show');
+				if (confirmCallback) {
+					$('#alertModal .btn-confirm').click(confirmCallback);
+				}
+			}
+		</script>
+	</head>
 
-  <body>
-    <div class="d-flex justify-content-end">
-      <div class="container">
-        <div>
-          <div>
-            <div class="card">
-              <div class="card-header">Register</div>
-              <div class="card-body">
-                <form class="form-horizontal" method="post" action="#">
-                  <select
-                    class="selectpicker"
-                    data-style="btn-primary"
-                    id="user_type"
-                  >
-                    <option value="0">고객님</option>
-                    <option value="1">사장님</option>
-                  </select>
+	<body>
+		<div class="d-flex justify-content-end">
+			<div class="container">
+				<div>
+					<div>
+						<div class="card">
+							<div class="card-header">Register</div>
+							<div class="card-body">
+								<form
+									class="form-horizontal"
+									method="post"
+									action="#"
+								>
+									<select
+										class="selectpicker"
+										data-style="btn-primary"
+										id="user_type"
+									>
+										<option value="0">고객님</option>
+										<option value="1">사장님</option>
+									</select>
 
-                  <div class="form-group"></div>
-                  <div class="form-group">
-                    <div class="cols-sm-10">
-                      <div class="input-group">
-                        <span class="input-group-addon"
-                          ><i class="fa fa-users fa" aria-hidden="true"></i
-                        ></span>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="nickname"
-                          id="nickname"
-                          placeholder="Enter your nickname"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="form-group">
-                      <div class="cols-sm-10">
-                        <div class="input-group">
-                          <span class="input-group-addon"
-                            ><i class="fa fa-users fa" aria-hidden="true"></i
-                          ></span>
-                          <input
-                            type="text"
-                            class="form-control"
-                            name="ID"
-                            id="user_id"
-                            placeholder="Enter your ID"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="cols-sm-10">
-                        <div class="input-group">
-                          <span class="input-group-addon"
-                            ><i class="fa fa-lock fa-lg" aria-hidden="true"></i
-                          ></span>
-                          <input
-                            type="password"
-                            class="form-control"
-                            name="password"
-                            id="password"
-                            placeholder="Enter your Password"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="cols-sm-10">
-                        <div class="input-group">
-                          <span class="input-group-addon"
-                            ><i class="fa fa-lock fa-lg" aria-hidden="true"></i
-                          ></span>
-                          <input
-                            type="password"
-                            class="form-control"
-                            name="confirmPassword"
-                            id="confirmPassword"
-                            placeholder="Confirm your Password"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <button
-                        type="button"
-                        onclick="join()"
-                        class="btn btn-primary btn-lg btn-block login-button"
-                      >
-                        Register
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+									<div class="form-group">
+										<div class="form-group">
+											<div class="cols-sm-10">
+												<div class="input-group">
+													<span
+														class="input-group-addon"
+														><i
+															class="fa fa-users fa"
+															aria-hidden="true"
+														></i
+													></span>
+													<input
+														type="text"
+														class="form-control"
+														name="ID"
+														id="user_id"
+														placeholder="Enter your ID"
+													/>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="cols-sm-10">
+												<div class="input-group">
+													<span
+														class="input-group-addon"
+														><i
+															class="fa fa-lock fa-lg"
+															aria-hidden="true"
+														></i
+													></span>
+													<input
+														type="password"
+														class="form-control"
+														name="password"
+														id="password"
+														placeholder="Enter your Password"
+													/>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="cols-sm-10">
+												<div class="input-group">
+													<span
+														class="input-group-addon"
+														><i
+															class="fa fa-lock fa-lg"
+															aria-hidden="true"
+														></i
+													></span>
+													<input
+														type="password"
+														class="form-control"
+														name="confirmPassword"
+														id="confirmPassword"
+														placeholder="Confirm your Password"
+													/>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<button
+												type="button"
+												onclick="join()"
+												class="btn btn-primary btn-lg btn-block login-button"
+											>
+												Register
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>

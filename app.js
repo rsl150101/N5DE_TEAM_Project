@@ -16,6 +16,7 @@ app.set("view engine", "html");
 
 app.use(express.static("assets"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());

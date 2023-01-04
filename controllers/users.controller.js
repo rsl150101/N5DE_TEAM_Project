@@ -1,8 +1,15 @@
 const UsersService = require("../services/users.service");
+const { User } = require("../models");
+const { Op } = require("sequelize");
+const jwt = require("jsonwebtoken");
 
 // User의 컨트롤러(Controller)역할을 하는 클래스
 class UsersController {
   usersService = new UsersService();
+
+  reqOrderStatus = async (req, res, next) => {
+    const user = req.params.user_id;
+  };
 
   orderResponse = async (req, res, next) => {
     // 서비스 계층에 구현된 로직을 실행합니다.
@@ -32,6 +39,97 @@ class UsersController {
     } catch (err) {
       console.log(err);
       res.status(400).json({ errorMessage: "요청 실패" });
+    }
+  };
+
+  // 가입 get
+  getJoin = (req, res) => {
+    return res.render("join_page");
+  };
+
+  // 가입 post
+  userSignup = async (req, res) => {
+    const { user_type, user_id, password, confirmPassword } = req.body;
+    console.log(user_type, user_id, password, confirmPassword)
+    try {
+
+      if (password !== confirmPassword) {
+        res.status(412).send({
+          errorMessage: "패스워드가 패스워드 확인란과 동일하지 않습니다.",
+        });
+        return;
+      }
+      if (user_id.length < 4) {
+        res.status(412).send({
+          errorMessage: "ID 형식이 올바르지 않습니다(4자 이상)",
+        });
+        return;
+      }
+      const existUsers = await User.findAll({
+        where: {
+          [Op.or]: [{ user_id }],
+        },
+      });
+      if (existUsers.length) {
+        res.status(412).send({
+          errorMessage: "이미 사용중인 닉네임입니다.",
+        });
+        return;
+      }
+      const reqSignUpData = await this.usersService.userSignUp(
+        parseInt(user_type),
+        user_id,
+        password,
+        confirmPassword,
+        res.status(201).send({
+          message:"회원가입을 축하합니다."
+        })
+      );
+
+    } catch (error) {
+      console.log(error.message);
+      res.status(400).send({ errorMessage: "회원가입에 실패하였습니다." });
+    }
+  };
+
+  //로그인
+
+  userLogin = async (req, res) => {
+    const { user_id, password } = req.body;
+
+    const user = await User.findOne({ where: { user_id, password } });
+
+    // 분해
+    if (!user) {
+      res.status(400).send({
+        errorMessage: "이메일 또는 패스워드가 잘못됐습니다.",
+      });
+      return;
+    }
+
+    // 분해한것
+    // const verifyUser = this.usersService.verifyUser(user);
+
+    // return res.status(verifyUser.statusCode).send({
+    //   errorMessage: verifyUser.msg,
+    // });
+
+    const token = jwt.sign({ user_id: User.user_id }, "customized-secret-key");
+
+    const expires = new Date();
+    expires.setMinutes(expires.getMinutes() + 60); // 만료 시간을 60분으로 설정합니다.
+
+    if (user.user_type === 0) {
+      res.send({
+        token: token,
+        message: "환영합니다 고객님",
+      });
+    }
+    if (user.user_type === 1) {
+      res.send({
+        token: token,
+        message: "환영합니다 기사님",
+      });
     }
   };
 }

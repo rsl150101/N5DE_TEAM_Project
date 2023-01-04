@@ -14,16 +14,14 @@ const storage = multer.diskStorage({
   }, //필드네임인 img와 현재 시각을 파일 이름으로 설정했다
 });
 const upload = multer({ storage: storage });
-
 router.post(
   "/order/request",
   upload.single("photo"),
   ordersController.requestOrder
 );
 
-router.post(
-  "/order/:order_id/review",
-  ordersController.reviewOrder
-);
+router.post("/order/:order_id/review", ordersController.reviewOrder);
+
+
 
 module.exports = router;

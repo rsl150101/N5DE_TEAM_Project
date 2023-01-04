@@ -1,6 +1,13 @@
 const { Order, Review } = require("../models");
+const { where, or } = require("sequelize");
 
-class ApisRepository {
+class OrdersRepository {
+  reqOrderStatus = async (customer_id, order_id) => {
+    const reqOrderStatus = await Order.findOne({
+      where: { customer_id: customer_id, id: order_id },
+    });
+    return reqOrderStatus;
+  };
   requestOrder = async (
     customer_id,
     nickname,
@@ -13,7 +20,7 @@ class ApisRepository {
     const requestOrder = await Order.create({
       customer_id: customer_id,
       status: 0,
-      
+
       nickname,
       phone,
       address,
@@ -35,4 +42,4 @@ class ApisRepository {
   };
 }
 
-module.exports = ApisRepository;
+module.exports = OrdersRepository;

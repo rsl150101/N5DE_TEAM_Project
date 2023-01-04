@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>customer-order-status-inquiry</title>
+    <style>
+      #order-photo {
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <span><%=orderData.request%></span><br />
+    <span><%=orderData.address%></span><br />
+    <img id="order-photo" src="/<%=orderData.photo%>" /><br />
+    <span><%=orderData.status%></span><br />
+  </body>
+</html>

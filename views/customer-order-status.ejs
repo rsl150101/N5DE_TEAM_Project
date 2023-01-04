@@ -14,6 +14,12 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/customer-main.css" />
+    <style>
+      #order-photo{
+        width: 200px;
+        height: 200px;
+      }
+    </style>
   </head>
 
   <body>
@@ -43,7 +49,11 @@
       </div>
       <% } if(order){ %>
       <!-- 요청사항이 있을때 -->
-      <div>주문있음</div>
+      <div>
+
+        <img id="order-photo" src="/<%=photo%>"/>
+        <span><%=request%></span>
+      </div>
       <% } %>
     </section>
   </body>

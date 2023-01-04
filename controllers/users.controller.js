@@ -92,19 +92,16 @@ class UsersController {
 
     const token = jwt.sign({ user_id: User.user_id }, "customized-secret-key");
 
-    const expires = new Date();
-    expires.setMinutes(expires.getMinutes() + 60); // 만료 시간을 60분으로 설정합니다.
+    res.cookie('token', token)
+
 
     if (user.user_type === 0) {
-      return res.redirect(`/users/${user.id}`)
-      // res.send({
-      //   token: token,
-      //   message: "환영합니다 고객님",
-      // });
+      res.status(201).send({
+        message: "환영합니다 고객님",
+      });
     }
     if (user.user_type === 1) {
-      res.send({
-        token: token,
+      res.status(201).send({
         message: "환영합니다 기사님",
       });
     }

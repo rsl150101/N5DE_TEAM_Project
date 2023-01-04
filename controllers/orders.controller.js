@@ -1,28 +1,23 @@
-const ApisService = require("../services/apis.service");
+const OrdersService = require("../services/orders.service");
 
 // User의 컨트롤러(Controller)역할을 하는 클래스
-class ApisController {
-  apisService = new ApisService();
+class OrdersController {
+  ordersService = new OrdersService();
 
   requestOrder = async (req, res, next) => {
     try {
-      const { nickname, phone, address, photo, request } = req.body;
-      const user_id = "Milb4";
-      const status = 0;
-      const driver_id = null;
-      const asign_table = 0;
-      const reqOrderData = await this.apisService.requestOrder(
-        user_id,
-        status,
-        driver_id,
+      const { nickname, phone, address, request } = req.body;
+      const photo = req.file.path;
+      const customer_id = req.params
+      const reqOrderData = await this.ordersService.requestOrder(
+        customer_id,
         nickname,
         phone,
         address,
         photo,
-        request,
-        asign_table
+        request
       );
-      // res.render(photo);
+      res.render(photo);
       res.status(201).json({ data: reqOrderData });
     } catch (err) {
       console.log(err);
@@ -49,4 +44,4 @@ class ApisController {
   };
 }
 
-module.exports = ApisController;
+module.exports = OrdersController;

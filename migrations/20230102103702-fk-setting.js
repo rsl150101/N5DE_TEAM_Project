@@ -29,7 +29,6 @@ module.exports = {
 
     // 드라이버 아이디
     await queryInterface.addColumn("Orders", "driver_id", {
-      allowNull: false,
       type: Sequelize.INTEGER,
     });
     await queryInterface.addConstraint("Orders", {

@@ -35,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
       },
       driver_id: {
-        allowNull: false,
         type: DataTypes.BIGINT,
       },
       nickname: {
@@ -51,7 +50,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
       },
       request: {
-        allowNull: false,
         type: DataTypes.STRING,
       },
       photo: {

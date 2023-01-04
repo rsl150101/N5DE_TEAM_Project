@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Milb's Blog</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/customer-main.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="header__column">
+        <h1>기민한 세탁소</h1>
+      </div>
+    </header>
+
+    <section id="mainSection">
+      <div class="order_form">
+        <form
+          action="/api/order/request"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <div>주문하기</div>
+          <input type="text" name="nickname" placeholder="닉네임" />
+          <input type="text" name="phone" placeholder="전화번호" />
+          <input type="text" name="address" placeholder="집주소" />
+          <input type="text" name="request" placeholder="요청사항" />
+          <input type="file" name="photo" />
+          <input type="submit" value="request" />
+        </form>
+      </div>
+    </section>
+  </body>
+</html>

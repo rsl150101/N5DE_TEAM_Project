@@ -13,33 +13,9 @@ class UsersController {
 
   orderResponse = async (req, res, next) => {
     // 서비스 계층에 구현된 로직을 실행합니다.
-    const order = await this.usersService.findMyOrder();
-    res.status(200).json({ data: order });
-  };
-
-  orderRequest = async (req, res, next) => {
-    const { nickname, phone, address, photo, request } = req.body;
-    const { user_id } = req.params;
-    const status = 0;
-    const driver_id = null;
-    const asign_table = 0;
-    try {
-      const reqOrderData = await this.usersService.newOrder(
-        user_id,
-        status,
-        driver_id,
-        nickname,
-        phone,
-        address,
-        photo,
-        request,
-        asign_table
-      );
-      res.status(201).json({ data: reqOrderData });
-    } catch (err) {
-      console.log(err);
-      res.status(400).json({ errorMessage: "요청 실패" });
-    }
+    // const order = await this.usersService.findMyOrder();
+    return res.render("customer-order-status",{order:false})
+    // res.status(200).json({ data: order });
   };
 
   // 가입 get
@@ -120,10 +96,11 @@ class UsersController {
     expires.setMinutes(expires.getMinutes() + 60); // 만료 시간을 60분으로 설정합니다.
 
     if (user.user_type === 0) {
-      res.send({
-        token: token,
-        message: "환영합니다 고객님",
-      });
+      return res.redirect(`/users/${user.id}`)
+      // res.send({
+      //   token: token,
+      //   message: "환영합니다 고객님",
+      // });
     }
     if (user.user_type === 1) {
       res.send({

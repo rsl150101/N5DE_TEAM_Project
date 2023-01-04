@@ -2,27 +2,23 @@ const { Order, Review } = require("../models");
 
 class ApisRepository {
   requestOrder = async (
-    user_id,
-    status,
-    driver_id,
+    customer_id,
     nickname,
     phone,
     address,
     photo,
-    request,
-    asign_table
+    request
   ) => {
     // ORM인 Sequelize에서 Posts 모델의 create 메소드를 사용해 데이터를 요청합니다.
     const requestOrder = await Order.create({
-      user_id,
-      status,
-      driver_id,
+      customer_id: customer_id,
+      status: 0,
+      
       nickname,
       phone,
       address,
       photo,
       request,
-      asign_table,
     });
 
     return requestOrder;

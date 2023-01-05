@@ -19,8 +19,8 @@ class OrdersController {
         photo,
         request
       );
-      console.log(photo);
-      res.render("customer-order-status", { order: true, photo, request });
+      console.log("abcd")
+      return res.redirect(`/users/${customer_id}`);
     } catch (err) {
       console.log(err);
       res.status(400).json({ errorMessage: "요청 실패" });

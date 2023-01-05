@@ -1,5 +1,5 @@
 const UsersService = require("../services/users.service");
-const { User } = require("../models");
+const { User, Order } = require("../models");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 
@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 class UsersController {
   usersService = new UsersService();
 
-  reqOrderStatus = async (req, res, next) => { 
+  reqOrderStatus = async (req, res, next) => {
     const cookie = req.cookies.token;
     const customer_id = jwt.decode(cookie).user_id;
     const order_id = req.params.order_id;
@@ -15,14 +15,34 @@ class UsersController {
       customer_id,
       order_id
     );
-    return res.render("customer-order-status-inquiry",{orderData:reqOrderStatusData})
-
+    return res.render("customer-order-status-inquiry", {
+      orderData: reqOrderStatusData,
+    });
   };
 
   orderResponse = async (req, res, next) => {
     // 서비스 계층에 구현된 로직을 실행합니다.
     // const order = await this.usersService.findMyOrder();
-    return res.render("customer-order-status", { order: false });
+    // return res.render("customer-order-status", { order: false });
+    try {
+      const cookie = req.cookies.token;
+      const user_id = jwt.decode(cookie).user_id;
+      const order = await Order.findOne({ where: { customer_id: user_id } });
+      const user = await User.findOne({ where: { id: user_id } });
+
+      return res.render("customer-main", {
+        photo: order ? order.photo : "",
+        request: order ? order.request : "",
+        driver_id: order ? order.driver_id : "",
+        order: !!order,
+        user_type: user.dataValues.user_type,
+      });
+
+    } catch (err) {
+      res.status(400).send({ message: err.message });
+    }
+
+    // return res.send("내가 만든 쿠키")
     // res.status(200).json({ data: order });
   };
 
@@ -79,7 +99,7 @@ class UsersController {
   userLogin = async (req, res) => {
     const { user_id, password } = req.body;
 
-    const user = await User.findOne({ where: { user_id, password } });
+    const user = await User.findOne({ where: [{ user_id, password }] });
 
     // 분해
     if (!user) {
@@ -99,18 +119,20 @@ class UsersController {
     const token = jwt.sign({ user_id: user.id }, "secret-key");
     res.cookie("token", token);
 
-    if (user.user_type === 0) {
-      return res.redirect(`/users/${user.id}`);
-      // res.send({
-      //   token: token,
-      //   message: "환영합니다 고객님",
-      // });
-    }
-    if (user.user_type === 1) {
-      res.status(201).send({
-        message: "환영합니다 기사님",
-      });
-    }
+    return res.status(201).redirect(`/users/${user.id}`);
+
+    // if (user.user_type === 0) {
+    //   return res.redirect(`/users/${user.id}`);
+    //   // res.send({
+    //   //   token: token,
+    //   //   message: "환영합니다 고객님",
+    //   // });
+    // }
+    // if (user.user_type === 1) {
+    //   return res.redirect(`/users/${user.id}`);
+    //   // res.status(201).send({
+    //   //   message: "환영합니다 기사님",
+    // }
   };
 }
 

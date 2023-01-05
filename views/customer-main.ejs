@@ -14,31 +14,103 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/customer-main.css" />
+    <style>
+      #order-photo {
+        width: 200px;
+        height: 200px;
+      }
+    </style>
   </head>
+  <script>
+    // function review_page_on(return res.render("customer-review-page"))
+    // (여기서 api orderres 호출하면 돌아오는 success함수로 데이터를 받아온다 그 후 리다이렉트하고
+    // 제가 받아온 데이터로 페이지 구성)
+    // function request_order() {
+    //   $.ajax({
+    //     type: "POST",
+    //     url: "/api/order/request",
+    //     // data: {
+    //     //   nickname: nickname,
+    //     //   phone: phone,
+    //     //   address: address,
+    //     //   request: request,
+    //     //   photo: photo,
 
+    //     // },
+    //     data: new FormData(document.getElementById("order_form")),
+    //     // enctype: "multipart/form-data",
+    //     success: function (response) {
+    //       console.log("testsss", response["User"]);
+    //     },
+    //   });
+    // }
+    // function request_order_show() {
+    //   $.ajax({
+    //     type: "GET",
+    //     url: "/api/order/request",
+    //     data: {},
+    //     enctype: "multipart/form-data",
+    //     success: function (response) {
+    //       console.log(response['User']);
+    //     },
+    //   });
+    // }
+    console.log("<%= order %>");
+  </script>
   <body>
     <header>
       <div class="header__column">
         <h1>기민한 세탁소</h1>
       </div>
     </header>
-
     <section id="mainSection">
+      <% if(user_type === 0) {%> <% if(!order) || 스테이터스 4면 {%>
+      <!-- 요청사항이 없을때 -->
       <div class="order_form">
         <form
+          id="order_form"
+          enctype="multipart/form-data"
           action="/api/order/request"
           method="post"
-          enctype="multipart/form-data"
         >
           <div>주문하기</div>
-          <input type="text" name="nickname" placeholder="닉네임" />
-          <input type="text" name="phone" placeholder="전화번호" />
-          <input type="text" name="address" placeholder="집주소" />
-          <input type="text" name="request" placeholder="요청사항" />
-          <input type="file" name="photo" />
-          <input type="submit" value="request" />
+          <input
+            id="nickname"
+            type="text"
+            name="nickname"
+            placeholder="닉네임"
+          />
+          <input id="phone" type="text" name="phone" placeholder="전화번호" />
+          <input id="address" type="text" name="address" placeholder="집주소" />
+          <input
+            id="request"
+            type="text"
+            name="request"
+            placeholder="요청사항"
+          />
+          <input id="photo" type="file" name="photo" />
+          <button type="submit">주문하기</button>
         </form>
       </div>
+      <% } if(order){ %> order은 임의로 한거라 빼시면되는데
+      <!-- 요청사항이 있을때 -->
+      <div>
+        <img id="order-photo" src="/<%=photo%>" />
+        <span><%=request%></span>
+        <span><%=driver_id%></span>
+        <button onclick="review_page_on()">주문현황 상세정보 확인</button>
+      </div>
+      <% } %> <% } else if(user_type === 1){ %> <% if(!order) {%>
+      <!-- 선택한 주문이 없을경우 -->
+      <div class="get-req">
+        <h1>사장 사이드 // 요청중인 세탁물 데이터 긁어오기</h1>
+      </div>
+      <% } if(order){ %>
+      <!-- 주문을 선택했을 경우 -->
+      <div class="driver-order">
+        <h1>사장 사이드 요청있음</h1>
+      </div>
+      <% } %> <% } %>
     </section>
   </body>
 </html>

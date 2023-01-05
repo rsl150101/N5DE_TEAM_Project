@@ -2,10 +2,12 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
 module.exports = (req, res, next) => {
-    const { authorization } = req.headers;
-    const [authType, authToken] = (authorization || '').split(' ');
 
-    if (!authToken || authType !== 'Bearer') {
+    const authorization = req.headers.cookie;
+    const [cookieType, authToken] = (authorization || "").split('=');
+
+
+    if (!authToken || cookieType !== 'token') {
         res.status(401).send({
             errorMessage: '로그인 후 이용 가능한 기능입니다.',
         });
@@ -13,8 +15,9 @@ module.exports = (req, res, next) => {
     }
 
     try {
-        const { userId } = jwt.verify(authToken, 'customized-secret-key');
-        User.findByPk(userId).then((user) => {
+        const userId = jwt.verify(authToken, 'secret-key');
+        console.log(userId)
+        User.findOne({where: {id:userId}}).then((user) => {
             res.locals.user = user;
             next();
         });
@@ -23,4 +26,5 @@ module.exports = (req, res, next) => {
             errorMessage: '로그인 후 이용 가능한 기능입니다.',
         });
     }
+
 };

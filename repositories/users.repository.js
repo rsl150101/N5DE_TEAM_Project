@@ -20,7 +20,6 @@ class UsersRepository {
     address,
     photo,
     request,
-    asign_table
   ) => {
     // ORM인 Sequelize에서 Posts 모델의 create 메소드를 사용해 데이터를 요청합니다.
     const neworder = await Order.create({
@@ -32,7 +31,6 @@ class UsersRepository {
       address,
       photo,
       request,
-      asign_table,
     });
     return neworder;
   };
@@ -44,6 +42,7 @@ class UsersRepository {
         password,
         user_type,
         point: 1000000,
+        order: 0,
       });
       return newuser;
     }
@@ -53,6 +52,7 @@ class UsersRepository {
         password,
         user_type,
         point: 0,
+        order: 0,
       });
       return newuser;
     }

@@ -20,7 +20,6 @@ class OrdersRepository {
     const requestOrder = await Order.create({
       customer_id: customer_id,
       status: 0,
-
       nickname,
       phone,
       address,

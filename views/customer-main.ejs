@@ -64,7 +64,7 @@
       </div>
     </header>
     <section id="mainSection">
-      <% if(user_type === 0) {%> <% if(!order) || 스테이터스 4면 {%>
+      <% if(user_type === 0) {%> <% if(!order){%>
       <!-- 요청사항이 없을때 -->
       <div class="order_form">
         <form
@@ -92,7 +92,7 @@
           <button type="submit">주문하기</button>
         </form>
       </div>
-      <% } if(order){ %> order은 임의로 한거라 빼시면되는데
+      <% } if(order){ %> 
       <!-- 요청사항이 있을때 -->
       <div>
         <img id="order-photo" src="/<%=photo%>" />

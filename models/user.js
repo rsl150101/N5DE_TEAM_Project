@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.BIGINT,
       },
+      order: {
+        allowNull: false,
+        type: DataTypes.BIGINT,
+      },
     },
     {
       sequelize,

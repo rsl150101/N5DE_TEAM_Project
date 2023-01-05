@@ -29,6 +29,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BIGINT,
       },
+      order: {
+        allowNull: false,
+        type: Sequelize.BIGINT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

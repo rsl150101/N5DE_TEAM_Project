@@ -19,7 +19,6 @@ class OrdersController {
         photo,
         request
       );
-      console.log("abcd")
       return res.redirect(`/users/${customer_id}`);
     } catch (err) {
       console.log(err);

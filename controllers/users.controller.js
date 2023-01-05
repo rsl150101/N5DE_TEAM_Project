@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 class UsersController {
   usersService = new UsersService();
 
-  reqOrderStatus = async (req, res, next) => {
+  reqOrderStatus = async (req, res, next) => { 
     const cookie = req.cookies.token;
     const customer_id = jwt.decode(cookie).user_id;
     const order_id = req.params.order_id;

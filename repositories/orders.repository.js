@@ -31,12 +31,12 @@ class OrdersRepository {
     return requestOrder;
   };
 
-  reviewOrder = async (nickname, user_id, content, star) => {
+  reviewOrder = async (reviewer_id, reviewee_id, content, star) => {
     const reviewOrder = await Review.create({
-      nickname,
-      user_id,
-      content,
-      star,
+      reviewer_id: reviewer_id,
+      reviewee_id: reviewee_id,
+      content: content,
+      star: star,
     });
     return reviewOrder;
   };

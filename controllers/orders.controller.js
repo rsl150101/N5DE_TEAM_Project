@@ -19,8 +19,8 @@ class OrdersController {
         photo,
         request
       );
-      console.log(photo)
-      res.render("customer-order-status", { order:true,photo,request });
+      console.log(photo);
+      res.render("customer-order-status", { order: true, photo, request });
     } catch (err) {
       console.log(err);
       res.status(400).json({ errorMessage: "요청 실패" });
@@ -30,11 +30,12 @@ class OrdersController {
   reviewOrder = async (req, res, next) => {
     try {
       const { content, star } = req.body;
-      const review_id = req.params;
-      const user_id = "Milb4";
-      const reqReviewData = await this.apisService.reviewOrder(
-        user_id,
-        review_id,
+      const cookie = req.cookies.token;
+      const reviewer_id = jwt.decode(cookie).user_id;
+      const reviewee_id = req.params;
+      const reqReviewData = await this.ordersService.reviewOrder(
+        reviewer_id,
+        reviewee_id,
         content,
         star
       );

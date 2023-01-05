@@ -3,8 +3,14 @@ const OrdersRepository = require("../repositories/orders.repository");
 class OrdersService {
   ordersRepository = new OrdersRepository();
 
-  
-  requestOrder = async (customer_id, nickname, phone, address, photo, request) => {
+  requestOrder = async (
+    customer_id,
+    nickname,
+    phone,
+    address,
+    photo,
+    request
+  ) => {
     const newOrderData = await this.ordersRepository.requestOrder(
       customer_id,
       nickname,
@@ -24,19 +30,13 @@ class OrdersService {
       request: newOrderData.request,
     };
   };
-  reviewOrder = async (user_id, nickname, content, star) => {
+  reviewOrder = async (reviewer_id, reviewee_id, content, star) => {
     const newReviewData = await this.ordersRepository.reviewOrder(
-      nickname,
-      user_id,
+      reviewer_id,
+      reviewee_id,
       content,
       star
     );
-    return {
-      nickname: newReviewData.nickname,
-      user_id: newReviewData.user_id,
-      content: newReviewData.content,
-      star: newReviewData.star,
-    };
   };
 }
 

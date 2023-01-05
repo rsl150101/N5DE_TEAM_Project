@@ -1,11 +1,10 @@
-const { where, or } = require("sequelize");
 const { Order, User } = require("../models");
 
 class UsersRepository {
   
 
   ordersResponse = async () => {
-    // ORM인 Sequelize에서 Posts 모델의 findAll 메소드를 사용해 데이터를 요청합니다.
+    // ORM인 Sequelize에서 Order 모델의 findAll 메소드를 사용해 데이터를 요청합니다.
     const ordersResponse = await Order.findAll();
 
     return ordersResponse;
@@ -16,18 +15,16 @@ class UsersRepository {
     status,
     driver_id,
     nickname,
-    phone,
     address,
     photo,
     request,
   ) => {
-    // ORM인 Sequelize에서 Posts 모델의 create 메소드를 사용해 데이터를 요청합니다.
+    // ORM인 Sequelize에서 Order 모델의 create 메소드를 사용해 데이터를 요청합니다.
     const neworder = await Order.create({
       user_id,
-      status,
+      status,      
       driver_id,
       nickname,
-      phone,
       address,
       photo,
       request,
@@ -57,6 +54,21 @@ class UsersRepository {
       return newuser;
     }
   };
+  findUser = async (user_id) => {
+		const user = await User.findOne({
+			where: { user_id:user_id },
+		});
+		if (!user) {
+			return false;
+		} else {
+			return {
+				id: user.id,
+				user_id: user.user_id,
+				password: user.password,
+				user_type: user.user_type,
+			};
+		}
+	};
 }
 
 module.exports = UsersRepository;

@@ -27,17 +27,38 @@ class UsersController {
     try {
       const cookie = req.cookies.token;
       const user_id = jwt.decode(cookie).user_id;
-      const order = await Order.findOne({ where: { customer_id: user_id } });
+      let order;
       const user = await User.findOne({ where: { id: user_id } });
+      if(user.dataValues.user_type){
+        order = await Order.findOne({where: {driver_id:user_id}})
+      }else{
+        order = await Order.findOne({ where: { customer_id: user_id } });
 
+      }
+      // const orders = await Order.findAll({ where: { status: 0 } });
+      const orders = await Order.findAll(
+        { where: { status: 0 } }
+      );
+      const orders_id = JSON.stringify(orders.map((item)=>{
+        return item.id
+      }))
+      // console.log("order Id" , orders_id)
+      // console.log("orders", orders);
+      // const jsonOrders = JSON.stringify(orders);
+      // console.log("json",jsonOrders)
+      // const jsonOrders = JSON.stringify([ { a: 1, b: 2 }, { a: 2, b: 3 }, { a: 3, b: 4 } ]);
       return res.render("customer-main", {
+        orders_id,
         photo: order ? order.photo : "",
         request: order ? order.request : "",
         driver_id: order ? order.driver_id : "",
-        order: !!order,
+        customer_id: order ? order.customer_id : "",
+        order_id: order ? order.id : "",
+        orders: order ? "" : orders,
+        order: user.dataValues.order,
         user_type: user.dataValues.user_type,
+        user_id
       });
-
     } catch (err) {
       res.status(400).send({ message: err.message });
     }
@@ -54,7 +75,6 @@ class UsersController {
   // 가입 post
   userSignup = async (req, res) => {
     const { user_type, user_id, password, confirmPassword } = req.body;
-    console.log(user_type, user_id, password, confirmPassword);
     try {
       if (password !== confirmPassword) {
         res.status(412).send({
@@ -98,41 +118,23 @@ class UsersController {
 
   userLogin = async (req, res) => {
     const { user_id, password } = req.body;
+    if ((await this.usersService.checkUser(user_id, password)) === false) {
+      return res.status(400).send("ID 또는 패스워드가 잘못됐습니다.");
+    } else {
+      const token = await this.usersService.issueToken(user_id);
 
-    const user = await User.findOne({ where: [{ user_id, password }] });
-
-    // 분해
-    if (!user) {
-      res.status(400).send({
-        errorMessage: "이메일 또는 패스워드가 잘못됐습니다.",
-      });
-      return;
+      res.cookie("token", token);
+      return res.redirect(
+        `/users/${await this.usersService.getUserId(user_id)}`
+      );
     }
 
-    // 분해한것
-    // const verifyUser = this.usersService.verifyUser(user);
+    // userLogin = async (req, res) => {
+    //   const { user_id, password } = req.body;
 
-    // return res.status(verifyUser.statusCode).send({
-    //   errorMessage: verifyUser.msg,
-    // });
+    //   const user = await User.findOne({ where: [{ user_id, password }] });
 
-    const token = jwt.sign({ user_id: user.id }, "secret-key");
-    res.cookie("token", token);
-
-    return res.status(201).redirect(`/users/${user.id}`);
-
-    // if (user.user_type === 0) {
-    //   return res.redirect(`/users/${user.id}`);
-    //   // res.send({
-    //   //   token: token,
-    //   //   message: "환영합니다 고객님",
-    //   // });
-    // }
-    // if (user.user_type === 1) {
-    //   return res.redirect(`/users/${user.id}`);
-    //   // res.status(201).send({
-    //   //   message: "환영합니다 기사님",
-    // }
+    //   return res.status(201).redirect(`/users/${user.id}`);
   };
 }
 

@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const OrdersController = require("../controllers/orders.controller.js");
 const ordersController = new OrdersController();
 const authMiddleware = require("../middlewares/auth-middleware.js");
@@ -16,17 +15,18 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
+// 여기는 customer
 router.post(
   "/order/request",
   upload.single("photo"),
   ordersController.requestOrder
 );
 
-router.post(
-  "/order/:order_id/review",
+// 여기부터 driver
+router.patch(
+  "/order/:order_id/confirm",
   authMiddleware,
-  ordersController.reviewOrder
-);
+  ordersController.confirmOrder
+)
 
 module.exports = router;

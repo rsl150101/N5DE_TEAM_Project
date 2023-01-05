@@ -2,11 +2,17 @@ const OrdersRepository = require("../repositories/orders.repository");
 
 class OrdersService {
   ordersRepository = new OrdersRepository();
+  confirmOrder = async (driver_id, order_id) => {
+    const pickConfirmData = await this.ordersRepository.confirmOrder(
+      driver_id,
+      order_id
+    );
+    return
+  };
 
   requestOrder = async (
     customer_id,
     nickname,
-    phone,
     address,
     photo,
     request
@@ -14,7 +20,7 @@ class OrdersService {
     const newOrderData = await this.ordersRepository.requestOrder(
       customer_id,
       nickname,
-      phone,
+      
       address,
       photo,
       request
@@ -24,19 +30,10 @@ class OrdersService {
       status: newOrderData.status,
       driver_id: newOrderData.driver_id,
       nickname: newOrderData.driver_id,
-      phone: newOrderData.phone,
       address: newOrderData.address,
       photo: newOrderData.photo,
       request: newOrderData.request,
     };
-  };
-  reviewOrder = async (reviewer_id, reviewee_id, content, star) => {
-    const newReviewData = await this.ordersRepository.reviewOrder(
-      reviewer_id,
-      reviewee_id,
-      content,
-      star
-    );
   };
 }
 

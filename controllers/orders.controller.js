@@ -7,14 +7,13 @@ class OrdersController {
 
   requestOrder = async (req, res, next) => {
     try {
-      const { nickname, phone, address, request } = req.body;
+      const { nickname, address, request } = req.body;
       const photo = req.file.path;
       const cookie = req.cookies.token;
       const customer_id = jwt.decode(cookie).user_id;
       const reqOrderData = await this.ordersService.requestOrder(
         customer_id,
         nickname,
-        phone,
         address,
         photo,
         request
@@ -26,22 +25,19 @@ class OrdersController {
     }
   };
 
-  reviewOrder = async (req, res, next) => {
+  confirmOrder = async (req, res, next) => {
     try {
-      const { content, star } = req.body;
       const cookie = req.cookies.token;
-      const reviewer_id = jwt.decode(cookie).user_id;
-      const reviewee_id = req.params;
-      const reqReviewData = await this.ordersService.reviewOrder(
-        reviewer_id,
-        reviewee_id,
-        content,
-        star
+      const driver_id = jwt.decode(cookie).user_id;
+      const order_id = req.params.order_id;
+      const confirmData = await this.ordersService.confirmOrder(
+        driver_id,
+        order_id
       );
-      res.status(200).json({ data: reqReviewData });
+      return res.sendStatus(200);
     } catch (err) {
       console.log(err);
-      res.status(400).json({ errorMessage: "리뷰 등록 실패" });
+      res.status(400).json({ errorMessage: "수락 실패" });
     }
   };
 }

@@ -1,5 +1,7 @@
 const UsersRepository = require("../repositories/users.repository");
 const OrdersRepository = require("../repositories/orders.repository");
+const jwt = require("jsonwebtoken");
+
 class UsersService {
   usersRepository = new UsersRepository();
   ordersRepository = new OrdersRepository();
@@ -62,14 +64,34 @@ class UsersService {
       user_type: SignUpData.user_type,
     };
   };
-  verifyUser = (user) => {
-    if (!user) {
-      return {
-        statusCode: 400,
-        msg: "이메일 또는 패스워드가 잘못됐습니다.",
-      };
-    }
-  };
+
+  issueToken = async (user_id) => {
+		const user = await this.usersRepository.findUser(user_id);
+		const token = jwt.sign({ user_id: user.id }, 'secret-key');
+		return token;
+	};
+
+	checkUser = async (user_id, password) => {
+		const user = await this.usersRepository.findUser(user_id);
+		if (!user || password !== user.password) {
+			return false;
+		} else {
+			return true;
+		}
+	};
+	getUserType = async (user_id) => {
+		const user = await this.usersRepository.findUser(user_id);
+		if (user.user_type == 0) {
+			return 0;
+		} else if (user.user_type == 1) {
+			return 1;
+		}
+	};
+  getUserId = async (user_id) => {
+    const user = await this.usersRepository.findUser(user_id);
+
+    return user.id
+  }
 }
 
 module.exports = UsersService;

@@ -7,39 +7,23 @@ const jwt = require("jsonwebtoken");
 class UsersController {
   usersService = new UsersService();
 
-  reqOrderStatus = async (req, res, next) => {
-    const user = req.params.user_id;
+  reqOrderStatus = async (req, res, next) => { 
+    const cookie = req.cookies.token;
+    const customer_id = jwt.decode(cookie).user_id;
+    const order_id = req.params.order_id;
+    const reqOrderStatusData = await this.usersService.reqOrderStatus(
+      customer_id,
+      order_id
+    );
+    return res.render("customer-order-status-inquiry",{orderData:reqOrderStatusData})
+
   };
 
   orderResponse = async (req, res, next) => {
     // 서비스 계층에 구현된 로직을 실행합니다.
-    const order = await this.usersService.findMyOrder();
-    res.status(200).json({ data: order });
-  };
-
-  orderRequest = async (req, res, next) => {
-    const { nickname, phone, address, photo, request } = req.body;
-    const { user_id } = req.params;
-    const status = 0;
-    const driver_id = null;
-    const asign_table = 0;
-    try {
-      const reqOrderData = await this.usersService.newOrder(
-        user_id,
-        status,
-        driver_id,
-        nickname,
-        phone,
-        address,
-        photo,
-        request,
-        asign_table
-      );
-      res.status(201).json({ data: reqOrderData });
-    } catch (err) {
-      console.log(err);
-      res.status(400).json({ errorMessage: "요청 실패" });
-    }
+    // const order = await this.usersService.findMyOrder();
+    return res.render("customer-order-status", { order: false });
+    // res.status(200).json({ data: order });
   };
 
   // 가입 get
@@ -50,9 +34,8 @@ class UsersController {
   // 가입 post
   userSignup = async (req, res) => {
     const { user_type, user_id, password, confirmPassword } = req.body;
-    console.log(user_type, user_id, password, confirmPassword)
+    console.log(user_type, user_id, password, confirmPassword);
     try {
-
       if (password !== confirmPassword) {
         res.status(412).send({
           errorMessage: "패스워드가 패스워드 확인란과 동일하지 않습니다.",
@@ -82,10 +65,9 @@ class UsersController {
         password,
         confirmPassword,
         res.status(201).send({
-          message:"회원가입을 축하합니다."
+          message: "회원가입을 축하합니다.",
         })
       );
-
     } catch (error) {
       console.log(error.message);
       res.status(400).send({ errorMessage: "회원가입에 실패하였습니다." });
@@ -114,15 +96,15 @@ class UsersController {
     //   errorMessage: verifyUser.msg,
     // });
 
-    const token = jwt.sign({ user_id: User.user_id }, "customized-secret-key");
-
-    res.cookie('token', token)
-
+    const token = jwt.sign({ user_id: user.id }, "secret-key");
+    res.cookie("token", token);
 
     if (user.user_type === 0) {
-      res.status(201).send({
-        message: "환영합니다 고객님",
-      });
+      return res.redirect(`/users/${user.id}`);
+      // res.send({
+      //   token: token,
+      //   message: "환영합니다 고객님",
+      // });
     }
     if (user.user_type === 1) {
       res.status(201).send({

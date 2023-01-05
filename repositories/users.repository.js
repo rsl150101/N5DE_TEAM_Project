@@ -1,6 +1,9 @@
+const { where, or } = require("sequelize");
 const { Order, User } = require("../models");
 
 class UsersRepository {
+  
+
   ordersResponse = async () => {
     // ORM인 Sequelize에서 Posts 모델의 findAll 메소드를 사용해 데이터를 요청합니다.
     const ordersResponse = await Order.findAll();
@@ -35,7 +38,7 @@ class UsersRepository {
   };
 
   userSignUp = async (user_type, user_id, password) => {
-    if (user_type === 0 ){
+    if (user_type === 0) {
       const newuser = await User.create({
         user_id,
         password,

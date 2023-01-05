@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const ApisController = require("../controllers/apis.controller.js");
-const apisController = new ApisController();
+const OrdersController = require("../controllers/orders.controller.js");
+const ordersController = new OrdersController();
 const multer = require("multer");
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./assets/uploads/"); // 파일 경로 설정
@@ -16,12 +17,11 @@ const upload = multer({ storage: storage });
 router.post(
   "/order/request",
   upload.single("photo"),
-  apisController.requestOrder
+  ordersController.requestOrder
 );
 
-router.post(
-  "/order/:order_id/review",
-  apisController.reviewOrder
-);
+router.post("/order/:order_id/review", ordersController.reviewOrder);
+
+
 
 module.exports = router;

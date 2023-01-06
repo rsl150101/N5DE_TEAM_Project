@@ -15,11 +15,21 @@
   </head>
   <body>
     <main>
-      <form>
-        <span>주소 : <%=orderData.address%></span><br />
-        <img id="order-photo" src="/<%=orderData.photo%>" /><br />
-        <span>주문 상태 : <%=orderData.status%></span><br />
-        <span>요청 사항 : <%=orderData.request%></span><br />
+      <form method="post" action="/api/order/<%=order_id%>/status">
+        <% if(!userType){%>
+          <h1>고객</h1>
+          <span>주소 : <%=orderData.address%></span><br />
+          <img id="order-photo" src="/<%=orderData.photo%>" /><br />
+          <span>주문 상태 : <%=orderData.status%></span><br />
+          <span>요청 사항 : <%=orderData.request%></span><br />
+        <%}else{%>
+          <h1>사장</h1>
+          <span>주소 : <%=orderData.address%></span><br />
+          <img id="order-photo" src="/<%=orderData.photo%>" /><br />
+          <span>주문 상태 : <%=orderData.status%></span><br />
+          <span>요청 사항 : <%=orderData.request%></span><br />
+          <button>상태 변경</button>
+        <% } %>
       </form>
     </main>
   </body>

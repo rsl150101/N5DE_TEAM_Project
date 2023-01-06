@@ -6,39 +6,160 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-      rel="stylesheet"
-      id="bootstrap-css"
-    />
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css" />
     <link rel="stylesheet" href="/customer-main.css" />
+    <style>
+      #order-photo {
+        width: 200px;
+        height: 200px;
+      }
+    </style>
   </head>
+  <script>
+    // const ttest = test.replaceAll('&#34;','\"').replace(/\t/g, "\\t")
+    //                  .replace(/\n/g, "\\n");
+    // console.log(JSON.parse(ttest))
+    function review_page_on() {
+      return res.redirect(`/users/${customer_id}/orders/${order_id}`);
+    }
 
+    // function review_page_on(return res.render("customer-review-page"))
+    // (여기서 api orderres 호출하면 돌아오는 success함수로 데이터를 받아온다 그 후 리다이렉트하고
+    // 제가 받아온 데이터로 페이지 구성)
+    // function request_order() {
+    //   $.ajax({
+    //     type: "POST",
+    //     url: "/api/order/request",
+    //     // data: {
+    //     //   nickname: nickname,
+    //     //   phone: phone,
+    //     //   address: address,
+    //     //   request: request,
+    //     //   photo: photo,
+
+    //     // },
+    //     data: new FormData(document.getElementById("order_form")),
+    //     // enctype: "multipart/form-data",
+    //     success: function (response) {
+    //       console.log("testsss", response["User"]);
+    //     },
+    //   });
+    // }
+    // function request_order_show() {
+    //   $.ajax({
+    //     type: "GET",
+    //     url: "/api/order/request",
+    //     data: {},
+    //     enctype: "multipart/form-data",
+    //     success: function (response) {
+    //       console.log(response['User']);
+    //     },
+    //   });
+    // }
+  </script>
   <body>
     <header>
-      <div class="header__column">
+      <div class="header_column">
         <h1>기민한 세탁소</h1>
       </div>
     </header>
-
     <section id="mainSection">
-      <div class="order_form">
+      <% if(user_type === 0) {%> <% if(!order){%>
+      <!-- 요청사항이 없을때 -->
         <form
+          id="order_form"
+          enctype="multipart/form-data"
           action="/api/order/request"
           method="post"
-          enctype="multipart/form-data"
         >
-          <div>주문하기</div>
-          <input type="text" name="nickname" placeholder="닉네임" />
-          <input type="text" name="phone" placeholder="전화번호" />
-          <input type="text" name="address" placeholder="집주소" />
-          <input type="text" name="request" placeholder="요청사항" />
-          <input type="file" name="photo" />
-          <input type="submit" value="request" />
+          <h5>주문하기</h3>
+          <input
+            id="nickname"
+            type="text"
+            name="nickname"
+            placeholder="닉네임"
+          />
+          <!-- <input id="phone" type="text" name="phone" placeholder="전화번호" /> -->
+          <input id="address" type="text" name="address" placeholder="집주소" />
+          <input
+            id="request"
+            type="text"
+            name="request"
+            placeholder="요청사항"
+          />
+          <input id="photo" type="file" name="photo" />
+          <button type="submit">주문하기</button>
         </form>
+      <% } if(order){ %>
+      <!-- 요청사항이 있을때 -->
+      <div class="order_form">
+        <img id="order-photo" src="/<%=photo%>" />
+        <div><span>요청사항 : <%=request%></span></div>
+        <div>
+          <span
+            >담당기사 : <% if(driver_id === null){ %> null <% } else{ %>
+            <%=driver_id%> <% } %>
+          </span>
+        </div>
+        <a href="/users/<%= customer_id %>/orders/<%= order_id %>">
+          <button>주문현황 상세정보 확인</button>
+        </a>
       </div>
+      <% } %> <% } else if(user_type === 1){ %> <% if(!order) {%>
+      <!-- 선택한 주문이 없을경우 -->
+      <div class="get-req">
+        <% orders.forEach((order) =>{%>
+        <div>
+          <h1>닉네임 : <%=order.dataValues.nickname %></h1>
+          <div>
+            <h4>주소 : <%=order.dataValues.address %></h4>
+            <h4>요청사항 : <%=order.dataValues.request %></h4>
+          </div>
+          <button id="deliveryBtn" class="deliveryBtn" value=<%=order.dataValues.id %>>
+            수거 요청
+          </button> 
+        </div>
+        <%}); %>
+      </div>
+      <% } if(order){ %>
+      <!-- 주문을 선택했을 경우 -->
+      <div class="order_form">
+        <img id="order-photo" src="/<%=photo%>" />
+        <div>
+          <span>요청사항 : <%=request%></span>
+        </div>
+        <div>
+          <span>진행 상태 : </span>
+        </div>
+        <a href="/users/<%= user_id %>/orders/<%= order_id %>">
+        <button>진행상태 업데이트</button>
+      </a>
+      </div>
+      <% } %> <% } %>
     </section>
+    <script>
+      const orders_id = "<%=orders_id%>";
+      const orders_idArr = JSON.parse(orders_id.replaceAll("&#34;", '"'));
+      const deliveryBtns = document.querySelectorAll(".deliveryBtn");
+      async function deliveryBtn(event) {
+        const response = await fetch(`/api/order/${event.target.value}/confirm`, {
+        method: "PATCH",});
+        const driver_id = "<%=user_id%>"
+        // console.log(driver_id)
+        if(response.status === 200){
+          // window.location.href = `/users/${driver_id}`
+          window.location.reload();
+        }
+      }
+
+      deliveryBtns.forEach((btn) => {
+        btn.addEventListener("click", deliveryBtn);
+      });
+      // $("#deliveryBtn").on("click", (e) => {
+      //   console.log(e)
+      //   console.log(e.target.value);
+      // });
+    </script>
   </body>
 </html>

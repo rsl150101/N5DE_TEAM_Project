@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "bobo1015",
+    "username": "",
+    "password": "",
     "database": "database_development",
-    "host": "db-express.currdrsgqq2b.ap-northeast-2.rds.amazonaws.com",
+    "host": "",
     "dialect": "mysql"
   },
   "test": {
